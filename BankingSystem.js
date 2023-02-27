@@ -17,6 +17,7 @@ let PaidEmi;
 let OutstandingLoan;
 let leftEmi;
 let keyPass;
+let payEMIs;
 function CreateAccount(){
     E_mail =  prompt("Enter Your Email:- ");
     var validMail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -30,6 +31,9 @@ function CreateAccount(){
         CreateAccount();
     }
     MobileValidation();
+    NameValidation();
+    AdhaarValidation();
+    ZipValidation();
       function MobileValidation()
       {
         Mno = prompt("Enter your Mobile Number +91: ");
@@ -44,8 +48,7 @@ function CreateAccount(){
   
         }
       }
-    
-    NameValidation();
+
     function NameValidation()
     {
        Name = prompt("Enter Your Name: ");
@@ -61,8 +64,6 @@ function CreateAccount(){
        }
     }
 
-    AdhaarValidation();
-
     function AdhaarValidation(){
        AdhaarNo = prompt("Enter Your Adhaar Number : ");
        var validadhaar = /^(\d{4})(\d{4})(\d{4})$/;
@@ -75,7 +76,7 @@ function CreateAccount(){
           AdhaarValidation();
         }
     }
-    ZipValidation();
+
     function ZipValidation()
     {
         Zipcode = prompt("Enter your Pincode: "); 
@@ -97,10 +98,17 @@ function CreateAccount(){
 
 function DepositM()
 {
-    
+    keyPass = prompt("Enter Your Key To Deposit Funds: ");
+
+    if(keyPass == E_mail)
+    {
     Amount = parseFloat(prompt("Enter Balance To Deposit: "));
     AccBalance = AccBalance+Amount;
     console.log(`Funds Deposited To your Account No ${AccNumber}`);
+    }
+    else{
+        console.log("Access Denied!")
+    }
 
 }
 
@@ -125,13 +133,32 @@ function GetLoan(){
     Interest = (BorrowAmount*14)/100;
     OutstandingLoan = BorrowAmount + Interest; 
     EMI =  EMI+ (OutstandingLoan)/Duration;
-    PendingLoan = OutstandingLoan-EMI;
-    PaidEmi = Duration - (PendingLoan/EMI);
-    leftEmi = PendingLoan/EMI;
 }
+
+function RepaymentLoan()
+{
+    payEMIs = parseInt(prompt("Enetr How much EmI You wants to Pay: "));
+    if(payEMIs<=Duration)
+    {
+    PendingLoan = OutstandingLoan-(payEMIs*EMI);
+    PaidEmi = payEMIs;
+    leftEmi = Duration - payEMIs;
+    AccBalance = AccBalance-(payEMIs*EMI);
+    console.log(`You Have Paid ${PaidEmi} EMIs!`);
+    }
+    else{
+        console.log("Enter EMIs less than or Equal to Duration:")
+    }
+
+}
+
+
 
 function ShowDetails()
 {
+    keyPass = prompt("Enter Key To Access Details: ")
+    if(keyPass == E_mail)
+    {
     console.log("<======Account Details========>");
 
     console.log("Name :",Name);
@@ -145,6 +172,10 @@ function ShowDetails()
     console.log("Number of EMI Paid: ",PaidEmi);
     console.log("Number of EMI Left To Pay: ",leftEmi);
     console.log("Pending Loan: ",PendingLoan);
+    }
+    else{
+        console.log("Access Denied!");
+    }
 }
 
 console.log(">>>>>>>>>>>>===============-BANKING APPLICATION-=================<<<<<<<<<<<<<");
@@ -154,7 +185,8 @@ console.log("Press 1 to create Account:");
 console.log("Press 2 to Deposit Funds:");
 console.log("Press 3 to Withdraw Money:");
 console.log("Press 4 to Get Loan:");
-console.log("Press 5 to Show Details:");
+console.log("Press 5 to Repayment Loan EMIs:")
+console.log("Press 6 to Show Details:");
 while(choice!=0){
     choice = parseInt(prompt("Select Your Choice: "));
 
@@ -163,22 +195,21 @@ while(choice!=0){
            console.log("Enter Your Personal Details To Create Account::>");
            CreateAccount();
            break;
-         
         case 2:
             DepositM();
             break;
         case 3:
             WithdrawAmount();
             break;
-
         case 4:
             GetLoan();
             break;
-
         case 5:
+            RepaymentLoan();
+            break;    
+        case 6:
             ShowDetails();
             break;
-        
         default:
             console.log("Please Enter Valid Choice:")
     }  
