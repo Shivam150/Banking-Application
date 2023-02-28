@@ -102,12 +102,24 @@ function DepositM()
 
     if(keyPass == E_mail)
     {
-    Amount = parseFloat(prompt("Enter Balance To Deposit: "));
-    AccBalance = AccBalance+Amount;
-    console.log(`Funds Deposited To your Account No ${AccNumber}`);
+      Amount = parseFloat(prompt("Enter Balance To Deposit: "));
+      if(Amount>=1)
+      {
+        AccBalance = AccBalance+Amount;
+        console.log(`Funds Deposited To your Account No ${AccNumber}`);
+      }
+     else{
+        console.log("Amount Should be Greater than or Equal to 1 Rs!");
+        DepositM();
+        
+     }
+
     }
+
     else{
-        console.log("Access Denied!")
+        console.log("Access Denied!");
+          DepositM();
+        
     }
 
 }
@@ -115,48 +127,83 @@ function DepositM()
 function WithdrawAmount()
 {
     WtM = parseFloat(prompt("Enter Amount You wish to Withdraw: "));
-    if(AccBalance>=WtM)
-    {
-      console.log(`Amount ${WtM} Withdraw From Your Account!`);
-      AccBalance = AccBalance-WtM;
-    }
+    if(WtM>=1)
+      if(AccBalance>=WtM)
+      {
+        console.log(`Amount ${WtM} Debited From Your Account!`);
+        AccBalance = AccBalance-WtM;
+      }
+      else{
+         console.log("Insuficient Funds!");
+         WithdrawAmount();
+         
+      } 
+      
     else{
-        console.log("Insuficient Funds!");
+        console.log("Withdrawal Amount should be Greater than or equal to 1 Rs And use Numeric Digit Only:");
+        WithdrawAmount();
+        
     }  
 }
 
 function GetLoan(){
-    BorrowAmount = parseFloat(prompt("Enter Amount You Wish to Borrow: "));
+    BorrowAmount = parseFloat(prompt("Enter Amount You Wish to Borrow But Loan Amount should be 500 Or more: "));
+    if(BorrowAmount>=500)
+    {
     Duration = parseInt(prompt("Enter Duration In Months Or tenure: "));
     console.log(`Congratulation Your Loan Amount of ${BorrowAmount} Disburst to Your Account Number ${AccNumber} at 14% PA`);
     AccBalance = AccBalance+BorrowAmount;
     Interest = (BorrowAmount*14)/100;
     OutstandingLoan = BorrowAmount + Interest; 
     EMI =  EMI+ (OutstandingLoan)/Duration;
+    }
+    else{
+        console.log("Please Enter Valid Loan Amount!");
+        GetLoan();
+        
+    }
 }
 
 function RepaymentLoan()
 {
-    payEMIs = parseInt(prompt("Enetr How much EmI You wants to Pay: "));
-    if(payEMIs<=Duration)
+    keyPass = prompt("Enter key TO Pay EMI: ")
+    if(keyPass == E_mail)
     {
-    PendingLoan = OutstandingLoan-(payEMIs*EMI);
-    PaidEmi = payEMIs;
-    leftEmi = Duration - payEMIs;
-    AccBalance = AccBalance-(payEMIs*EMI);
-    console.log(`You Have Paid ${PaidEmi} EMIs!`);
+
+     payEMIs = parseInt(prompt("Enetr How much EmI You wants to Pay: "));
+    
+    
+    if(payEMIs>=1)
+    {
+       if(payEMIs<=Duration)
+       {
+         PendingLoan = OutstandingLoan-(payEMIs*EMI);
+         PaidEmi = payEMIs;
+         leftEmi = Duration - payEMIs;
+         AccBalance = AccBalance-(payEMIs*EMI);
+         console.log(`You Have Paid ${PaidEmi} EMIs!`);
+        }
+       else{
+        console.log("Enter EMIs less than or Equal to Duration:");
+        RepaymentLoan();
+        }
     }
     else{
-        console.log("Enter EMIs less than or Equal to Duration:")
+        console.log("Pay At-least 1 EMI!");
+        RepaymentLoan();
+        
     }
+  }
+  else{
+    console.log("Access Denied!");
+    RepaymentLoan();
+  }
 
 }
 
-
-
 function ShowDetails()
 {
-    keyPass = prompt("Enter Key To Access Details: ")
+    keyPass = prompt("Enter Authorized Key To Access Details: ")
     if(keyPass == E_mail)
     {
     console.log("<======Account Details========>");
@@ -175,19 +222,21 @@ function ShowDetails()
     }
     else{
         console.log("Access Denied!");
+        
     }
 }
 
 console.log(">>>>>>>>>>>>===============-BANKING APPLICATION-=================<<<<<<<<<<<<<");
 
-console.log("Select An Option: ");
-console.log("Press 1 to create Account:");
-console.log("Press 2 to Deposit Funds:");
-console.log("Press 3 to Withdraw Money:");
-console.log("Press 4 to Get Loan:");
-console.log("Press 5 to Repayment Loan EMIs:")
-console.log("Press 6 to Show Details:");
 while(choice!=0){
+    console.log("Select An Option: ");
+    console.log("Press 1 to create Account:");
+    console.log("Press 2 to Deposit Funds:");
+    console.log("Press 3 to Withdraw Money:");
+    console.log("Press 4 to Get Loan:");
+    console.log("Press 5 to Repayment Loan EMIs:")
+    console.log("Press 6 to Show Details:");
+
     choice = parseInt(prompt("Select Your Choice: "));
 
     switch (choice) {
@@ -214,5 +263,6 @@ while(choice!=0){
             console.log("Please Enter Valid Choice:")
     }  
 }
+
 
 
