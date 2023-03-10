@@ -5,28 +5,48 @@ let Mno;
 let AdhaarNo;
 let Zipcode;
 let Amount;
+let AccNumber;
 let AccBalance=0;
 let WtM;
 let Interest;
 let EMI = 0;
 let choice;
-let BorrowAmount;
+let BorrowAmount=0;
 let Duration;
-let PendingLoan;
 let PaidEmi;
-let OutstandingLoan;
-let leftEmi;
+let OutstandingLoan=0;
+// let Users;
 let keyPass;
 let payEMIs;
-function CreateAccount(){
-    E_mail =  prompt("Enter Your Email:- ");
-    var validMail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+let exit;
+let user;
+let user1
 
+const Users= [];
+
+
+
+function CreateAccount(){
+    E_mail =  prompt("Enter Your Email: ");
+    var validMail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    
+    user ={
+      H_Name : "",
+      EMail : "",
+      MobN : "",
+      AddressPin : "",
+      AccountNo : "",
+      AccountBlc : 0,
+      EMIPAID : 0,
+      PendingLoan : 0
+    };
+    
     if(E_mail.match(validMail))
     {
         console.log(E_mail);
     }
     else{
+
         console.log("Invalid Email! Enter Again");
         CreateAccount();
     }
@@ -34,197 +54,283 @@ function CreateAccount(){
     NameValidation();
     AdhaarValidation();
     ZipValidation();
-      function MobileValidation()
-      {
-        Mno = prompt("Enter your Mobile Number +91: ");
-        var validNumber = /^(\d{3})(\d{3})(\d{4})$/;
-        if(Mno.match(validNumber))
-        {
-          console.log(Mno);
-        }
-        else{
-          console.log("Invalid Mobile number!");
-          MobileValidation();
-  
-        }
-      }
 
-    function NameValidation()
-    {
-       Name = prompt("Enter Your Name: ");
-       var  validName = /^[a-zA-Z]+[ ]?[a-zA-Z]+$/;
-       if(Name.match(validName))
-        {
-        console.log(Name);
-
-        }
-       else{
-        console.log("Invalid Name!");
-        NameValidation();
-       }
-    }
-
-    function AdhaarValidation(){
-       AdhaarNo = prompt("Enter Your Adhaar Number : ");
-       var validadhaar = /^(\d{4})(\d{4})(\d{4})$/;
-       if(AdhaarNo.match(validadhaar))
-       {
-          console.log(AdhaarNo);
-       }
-       else{
-          console.log("Invalid adhaar number!");
-          AdhaarValidation();
-        }
-    }
-
-    function ZipValidation()
-    {
-        Zipcode = prompt("Enter your Pincode: "); 
-        var validPinCode = /^(\d{3})(\d{3})$/;
-        if(Zipcode.match(validPinCode))
-        {
-        console.log(Zipcode);
-        }
-        else
-        {
-             console.log("Invalid Pincode!");
-           ZipValidation();
-        } 
-    }    
     console.log("<======== ACCOUNT-CREATED =========>");
-
+    //console.log(Users);
     AccNumber = Math.floor(Math.random()*9000000000)+10;
+    let user1=user;
+    user1.H_Name = Name;
+    user1.EMail = E_mail;
+    user1.MobN = Mno;
+    user1.AddressPin = Zipcode;
+    user1.AccountNo = AccNumber;
+    user1.AccountBlc = AccBalance;
+    user1.EMIPAID = PaidEmi;
+    user1.PendingLoan = OutstandingLoan;
+    Users.push(user1); 
+
 }
+
+
+function MobileValidation()
+{
+  Mno = prompt("Enter your Mobile Number +91: ");
+  var validNumber = /^(\d{3})(\d{3})(\d{4})$/;
+  if(Mno.match(validNumber))
+  {
+    console.log(Mno);
+  }
+  else{
+    console.log("Invalid Mobile number!");
+    MobileValidation();
+  }
+}
+
+function NameValidation()
+{
+ Name = prompt("Enter Your Name: ");
+ var  validName = /^[a-zA-Z]+[ ]?[a-zA-Z]+$/;
+ if(Name.match(validName))
+  {
+  console.log(Name);
+
+  }
+ else{
+  console.log("Invalid Name!");
+  NameValidation();
+ }
+}
+
+function AdhaarValidation(){
+ AdhaarNo = prompt("Enter Your Adhaar Number : ");
+ var validadhaar = /^(\d{4})(\d{4})(\d{4})$/;
+ if(AdhaarNo.match(validadhaar))
+ {
+    console.log(AdhaarNo);
+ }
+ else{
+    console.log("Invalid adhaar number!");
+    AdhaarValidation();
+  }
+}
+
+function ZipValidation()
+{
+  Zipcode = prompt("Enter your Pincode: "); 
+  var validPinCode = /^(\d{3})(\d{3})$/;
+  if(Zipcode.match(validPinCode))
+  {
+  console.log(Zipcode);
+  }
+  else
+  {
+       console.log("Invalid Pincode!");
+     ZipValidation();
+  } 
+}    
 
 function DepositM()
 {
-    keyPass = prompt("Enter Your Key To Deposit Funds: ");
+  keyPass = prompt("Enter Your Key To Deposit Funds: ");
 
-    if(keyPass == E_mail)
+  for(let i=0; i<Users.length;i++)
+  {
+    if(Users[i].EMail == keyPass)
     {
       Amount = parseFloat(prompt("Enter Balance To Deposit: "));
       if(Amount>=1)
       {
-        AccBalance = AccBalance+Amount;
+        let user1=user;
+        Users[i].AccountBlc = Users[i].AccountBlc+Amount;
+        // user1.AccountBlc = AccBalance; 
         console.log(`Funds Deposited To your Account No ${AccNumber}`);
-      }
-     else{
-        console.log("Amount Should be Greater than or Equal to 1 Rs!");
-        DepositM();
         
-     }
+      }
+
+      else{
+        console.log("Amount Should be Greater than or Equal to 1 Rs!");
+        DepositM(); 
+      }
+      break;
 
     }
-
+    
     else{
         console.log("Access Denied!");
+        exit = prompt("Press 0 to Exit OR Press Any Key To Continue: ");
+        while(exit!=0)
+        {
           DepositM();
-        
+        }
     }
+  }
 
+   
 }
 
 function WithdrawAmount()
 {
-    WtM = parseFloat(prompt("Enter Amount You wish to Withdraw: "));
-    if(WtM>=1)
-      if(AccBalance>=WtM)
+
+  keyPass = prompt("Enter Your Key TO Withdraw Funds: ")
+  for(let i =0;i<Users.length;i++)
+  {
+    if(Users[i].EMail == keyPass)
+    {
+      WtM = parseFloat(prompt("Enter Amount You wish to Withdraw: "));
+      if(WtM>=1)
       {
+        if(Users[i].AccountBlc>=WtM)
+        {
         console.log(`Amount ${WtM} Debited From Your Account!`);
-        AccBalance = AccBalance-WtM;
-      }
-      else{
+        Users[i].AccountBlc = Users[i].AccountBlc-WtM; 
+
+        // user1=user;
+        // user1.AccountBlc = AccBalance;
+        }
+        else{
          console.log("Insuficient Funds!");
-         WithdrawAmount();
-         
+         exit = prompt("Press 0 to Exit OR Press Any Key To Continue: ");
+         while(exit!=0)
+         {
+          WithdrawAmount();
+         } 
+        } 
       } 
-      
-    else{
+      else{
         console.log("Withdrawal Amount should be Greater than or equal to 1 Rs And use Numeric Digit Only:");
-        WithdrawAmount();
-        
-    }  
+        WithdrawAmount(); 
+      } 
+
+     break; 
+    }
+   else{
+    console.log("Enter Valid Key!");
+    exit = prompt("Press 0 to Exit OR Press Any Key To Continue: ");
+        while(exit!=0)
+        {
+          WithdrawAmount();
+        }
+   }
+ }
 }
 
-function GetLoan(){
-    BorrowAmount = parseFloat(prompt("Enter Amount You Wish to Borrow But Loan Amount should be 500 Or more: "));
-    if(BorrowAmount>=500)
+function GetLoan()
+{
+   keyPass = prompt("Enter Your Pass Key To Get Loan:");
+
+  for(let i=0;i<Users.length;i++)
+  {
+    if(Users[i].EMail == keyPass)
     {
-    Duration = parseInt(prompt("Enter Duration In Months Or tenure: "));
-    console.log(`Congratulation Your Loan Amount of ${BorrowAmount} Disburst to Your Account Number ${AccNumber} at 14% PA`);
-    AccBalance = AccBalance+BorrowAmount;
-    Interest = (BorrowAmount*14)/100;
-    OutstandingLoan = BorrowAmount + Interest; 
-    EMI =  EMI+ (OutstandingLoan)/Duration;
+      if(Users[i].PendingLoan<=500)
+      {
+         BorrowAmount = parseFloat(prompt("Enter Amount You Wish to Borrow But Loan Amount should be 500 Or more: "));
+        if(BorrowAmount>=500)
+        {
+           Duration = parseInt(prompt("Enter Duration In Months Or tenure: "));
+           console.log(`Congratulation Your Loan Amount of ${BorrowAmount} Disburst to Your Account Number ${AccNumber} at 14% PA`);
+           Users[i].AccountBlc = Users[i].AccountBlc+BorrowAmount;
+           Interest = (BorrowAmount*14)/100;
+           Users[i].PendingLoan = BorrowAmount + Interest; 
+           EMI =  EMI+ (Users[i].PendingLoan)/Duration;
+           
+        }
+        else
+        {
+           console.log("Please Enter Valid Loan Amount!");
+           GetLoan();   
+        }
+      }
+      else
+      {
+        console.log("Sorry! You Have a Pending Loan!")
+
+      } 
+      
+      break;
     }
-    else{
-        console.log("Please Enter Valid Loan Amount!");
-        GetLoan();
-        
-    }
+   else{
+      exit = prompt("Press 0 to Exit OR Press Any Key To Continue: ");
+        while(exit!=0)
+        {
+          GetLoan();
+        }
+    } 
+  }  
 }
 
 function RepaymentLoan()
 {
-    keyPass = prompt("Enter key TO Pay EMI: ")
-    if(keyPass == E_mail)
+
+  keyPass = prompt("Enter key TO Pay EMI: ")
+  for(let i=0;i<Users.length;i++)
+  {  
+    if(Users[i].EMail == keyPass)
     {
 
-     payEMIs = parseInt(prompt("Enetr How much EmI You wants to Pay: "));
-    
-    
-    if(payEMIs>=1)
-    {
+     payEMIs = parseInt(prompt("Enetr How much EMI You wants to Pay: "));
+
+     if(payEMIs>=1)
+     {
        if(payEMIs<=Duration)
        {
-         PendingLoan = OutstandingLoan-(payEMIs*EMI);
-         PaidEmi = payEMIs;
+         Users[i].EMIPAID= payEMIs;
          leftEmi = Duration - payEMIs;
-         AccBalance = AccBalance-(payEMIs*EMI);
+         Users[i].AccountBlc = Users[i].AccountBlc-(payEMIs*EMI);
+         Users[i].PendingLoan = Users[i].PendingLoan-(payEMIs*EMI);
+
+         if(Users[i].PendingLoan<0)
+         {
+          console.log("Thanks! You Have Paid your all EMIs, There is No Pending EMIs");
+           Users[i].PendingLoan = 0;
+         }
+         else{
+            Users[i].PendingLoan;
+         }
          console.log(`You Have Paid ${PaidEmi} EMIs!`);
         }
        else{
         console.log("Enter EMIs less than or Equal to Duration:");
         RepaymentLoan();
         }
-    }
-    else{
+      }
+      else{
         console.log("Pay At-least 1 EMI!");
-        RepaymentLoan();
-        
-    }
-  }
-  else{
-    console.log("Access Denied!");
-    RepaymentLoan();
-  }
+        RepaymentLoan();  
+      }
 
+      break;
+   }
+    else{
+    console.log("Access Denied!");
+    exit = prompt("Press 0 to Exit OR Press Any Key To Continue: ");
+        while(exit!=0)
+        {
+          RepaymentLoan();
+        }
+    }
+
+  }
 }
 
 function ShowDetails()
 {
-    keyPass = prompt("Enter Authorized Key To Access Details: ")
-    if(keyPass == E_mail)
+    keyPass = prompt("Enter Authorized Key To Access Details: ");
+    for(let i=0; i<Users.length;i++)
     {
-    console.log("<======Account Details========>");
+      // console.log(i);
+      if(Users[i].EMail == keyPass)
+      {
+        console.log(Users[i]);
+        break;
+      }
+    }
 
-    console.log("Name :",Name);
-    console.log("Email Id :",E_mail);
-    console.log("Mobile Number +91 ",Mno);
-    console.log("Address PinCode :",Zipcode);
-    console.log("Account Number is:-" , AccNumber);
-    console.log("Account Balance: ",AccBalance);
-    console.log("Outstanding Loan: ",OutstandingLoan);
-    console.log(`Monthly EMI For ${Duration} Months: `,EMI);
-    console.log("Number of EMI Paid: ",PaidEmi);
-    console.log("Number of EMI Left To Pay: ",leftEmi);
-    console.log("Pending Loan: ",PendingLoan);
-    }
-    else{
-        console.log("Access Denied!");
-        
-    }
+    // console.log("Array Values:-");
+    // console.log(Users);
+  
 }
+
 
 console.log(">>>>>>>>>>>>===============-BANKING APPLICATION-=================<<<<<<<<<<<<<");
 
@@ -240,7 +346,7 @@ while(choice!=0){
     choice = parseInt(prompt("Select Your Choice: "));
 
     switch (choice) {
-       case 1:
+        case 1:
            console.log("Enter Your Personal Details To Create Account::>");
            CreateAccount();
            break;
@@ -251,7 +357,7 @@ while(choice!=0){
             WithdrawAmount();
             break;
         case 4:
-            GetLoan();
+            GetLoan(); 
             break;
         case 5:
             RepaymentLoan();
@@ -263,6 +369,3 @@ while(choice!=0){
             console.log("Please Enter Valid Choice:")
     }  
 }
-
-
-
